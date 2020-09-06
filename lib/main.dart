@@ -14,12 +14,11 @@ import 'controllers/main_info.dart';
 String pathToSketchFile;
 String resultsDirectory = Platform.environment['SENTRY_DSN'] ?? '/temp';
 final SentryClient sentry = SentryClient(dsn: resultsDirectory);
-
+var log = Logger('Main');
 void main(List<String> args) async {
   await checkConfigFile();
 
   MainInfo().sentry = SentryClient(dsn: resultsDirectory);
-  var log = Logger('Main');
 
   log.info(args.toString());
 
@@ -93,6 +92,7 @@ Future<void> checkConfigFile() async {
   // Do not get metrics if user has envvar PB_METRICS set to false
   if (envvars['PB_METRICS'] != null &&
       envvars['PB_METRICS'].toLowerCase().contains('false')) {
+    log.info('PB Metrics are turned off, skipping.');
     return;
   }
 
