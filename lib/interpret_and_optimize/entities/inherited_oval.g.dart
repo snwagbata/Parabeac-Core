@@ -11,7 +11,6 @@ InheritedOval _$InheritedOvalFromJson(Map<String, dynamic> json) {
     json['originalRef'],
   )
     ..subsemantic = json['subsemantic'] as String
-    ..child = json['child']
     ..topLeftCorner = json['topLeftCorner'] == null
         ? null
         : Point.fromJson(json['topLeftCorner'] as Map<String, dynamic>)
@@ -31,7 +30,6 @@ InheritedOval _$InheritedOvalFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$InheritedOvalToJson(InheritedOval instance) =>
     <String, dynamic>{
       'subsemantic': instance.subsemantic,
-      'child': instance.child,
       'topLeftCorner': instance.topLeftCorner,
       'bottomRightCorner': instance.bottomRightCorner,
       'borderInfo': instance.borderInfo,

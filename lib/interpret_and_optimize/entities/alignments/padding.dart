@@ -9,7 +9,6 @@ part 'padding.g.dart';
 
 @JsonSerializable(nullable: true)
 class Padding extends PBVisualIntermediateNode {
-  var child;
   double left, right, top, bottom, screenWidth, screenHeight;
 
   final String UUID;

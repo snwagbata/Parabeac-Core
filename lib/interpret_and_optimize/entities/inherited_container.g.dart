@@ -18,7 +18,6 @@ InheritedContainer _$InheritedContainerFromJson(Map<String, dynamic> json) {
     borderInfo: json['borderInfo'] as Map<String, dynamic>,
   )
     ..subsemantic = json['subsemantic'] as String
-    ..child = json['child']
     ..name = json['name'] as String
     ..color = json['color'] as String
     ..widgetType = json['widgetType'] as String
@@ -30,7 +29,6 @@ InheritedContainer _$InheritedContainerFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$InheritedContainerToJson(InheritedContainer instance) =>
     <String, dynamic>{
       'subsemantic': instance.subsemantic,
-      'child': instance.child,
       'name': instance.name,
       'color': instance.color,
       'originalRef': instance.originalRef,

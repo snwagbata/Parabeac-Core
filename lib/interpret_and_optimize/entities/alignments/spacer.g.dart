@@ -14,7 +14,6 @@ Spacer _$SpacerFromJson(Map<String, dynamic> json) {
     flex: json['flex'] as int,
   )
     ..subsemantic = json['subsemantic'] as String
-    ..child = json['child']
     ..size = json['size'] as Map<String, dynamic>
     ..borderInfo = json['borderInfo'] as Map<String, dynamic>
     ..alignment = json['alignment'] as Map<String, dynamic>
@@ -25,7 +24,6 @@ Spacer _$SpacerFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$SpacerToJson(Spacer instance) => <String, dynamic>{
       'subsemantic': instance.subsemantic,
-      'child': instance.child,
       'topLeftCorner': instance.topLeftCorner,
       'bottomRightCorner': instance.bottomRightCorner,
       'size': instance.size,

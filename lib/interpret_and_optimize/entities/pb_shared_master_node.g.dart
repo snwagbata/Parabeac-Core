@@ -21,7 +21,6 @@ PBSharedMasterNode _$PBSharedMasterNodeFromJson(Map<String, dynamic> json) {
         : Point.fromJson(json['bottomRightCorner'] as Map<String, dynamic>),
   )
     ..subsemantic = json['subsemantic'] as String
-    ..child = json['child']
     ..size = json['size'] as Map<String, dynamic>
     ..borderInfo = json['borderInfo'] as Map<String, dynamic>
     ..alignment = json['alignment'] as Map<String, dynamic>
@@ -38,7 +37,6 @@ PBSharedMasterNode _$PBSharedMasterNodeFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$PBSharedMasterNodeToJson(PBSharedMasterNode instance) =>
     <String, dynamic>{
       'subsemantic': instance.subsemantic,
-      'child': instance.child,
       'topLeftCorner': instance.topLeftCorner,
       'bottomRightCorner': instance.bottomRightCorner,
       'size': instance.size,

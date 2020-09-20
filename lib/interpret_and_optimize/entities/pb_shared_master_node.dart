@@ -4,6 +4,7 @@ import 'package:parabeac_core/generation/prototyping/pb_prototype_node.dart';
 import 'package:parabeac_core/input/sketch/entities/layers/symbol_master.dart';
 import 'package:parabeac_core/interpret_and_optimize/entities/interfaces/pb_inherited_intermediate.dart';
 import 'package:parabeac_core/interpret_and_optimize/entities/layouts/temp_group_layout_node.dart';
+import 'package:parabeac_core/interpret_and_optimize/entities/subclasses/pb_attribute.dart';
 import 'package:parabeac_core/interpret_and_optimize/entities/subclasses/pb_intermediate_node.dart';
 import 'package:parabeac_core/interpret_and_optimize/entities/subclasses/pb_layout_intermediate_node.dart';
 import 'package:parabeac_core/interpret_and_optimize/entities/subclasses/pb_visual_intermediate_node.dart';
@@ -45,12 +46,14 @@ class PBSharedMasterNode extends PBVisualIntermediateNode
   ///The children that makes the UI of the [PBSharedMasterNode]. The children are going to be wrapped
   ///using a [TempGroupLayoutNode] as the root Node.
   set children(List<PBIntermediateNode> children) {
-    child ??= TempGroupLayoutNode(originalRef, currentContext);
-    if (child is PBLayoutIntermediateNode) {
-      children.forEach((element) => child.addChild(element));
+    var attribute = getAttributeNamed('child');
+    attribute.attributeNode ??=
+        TempGroupLayoutNode(originalRef, currentContext);
+    if (attribute.attributeNode is PBLayoutIntermediateNode) {
+      children.forEach((element) => attribute.attributeNode.addChild(element));
     } else {
-      child = TempGroupLayoutNode(originalRef, currentContext)
-        ..replaceChildren([child, ...children]);
+      attribute.attributeNode = TempGroupLayoutNode(originalRef, currentContext)
+        ..replaceChildren([attribute.attributeNode, ...children]);
     }
   }
 
@@ -97,8 +100,9 @@ class PBSharedMasterNode extends PBVisualIntermediateNode
   }
 
   @override
-  void addChild(PBIntermediateNode node) =>
-      child == null ? child = node : children = [node];
+  void addChild(PBIntermediateNode node) {
+    child = node;
+  }
 
   @override
   void alignChild() {}

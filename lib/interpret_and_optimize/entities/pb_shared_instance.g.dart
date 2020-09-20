@@ -21,7 +21,6 @@ PBSharedInstanceIntermediateNode _$PBSharedInstanceIntermediateNodeFromJson(
         : Point.fromJson(json['bottomRightCorner'] as Map<String, dynamic>),
   )
     ..subsemantic = json['subsemantic'] as String
-    ..child = json['child']
     ..color = json['color'] as String
     ..size = json['size'] as Map<String, dynamic>
     ..borderInfo = json['borderInfo'] as Map<String, dynamic>
@@ -38,7 +37,6 @@ Map<String, dynamic> _$PBSharedInstanceIntermediateNodeToJson(
         PBSharedInstanceIntermediateNode instance) =>
     <String, dynamic>{
       'subsemantic': instance.subsemantic,
-      'child': instance.child,
       'topLeftCorner': instance.topLeftCorner,
       'bottomRightCorner': instance.bottomRightCorner,
       'color': instance.color,

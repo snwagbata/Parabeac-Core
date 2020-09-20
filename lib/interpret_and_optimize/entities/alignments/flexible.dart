@@ -9,7 +9,6 @@ part 'flexible.g.dart';
 @JsonSerializable(nullable: true)
 class Flexible extends PBVisualIntermediateNode {
   int flex;
-  var child;
 
   @override
   @JsonKey(ignore: true)
@@ -26,12 +25,13 @@ class Flexible extends PBVisualIntermediateNode {
   Flexible(
     this.UUID, {
     this.currentContext,
-    this.child,
+    child,
     this.flex,
     this.topLeftCorner,
     this.bottomRightCorner,
   }) : super(topLeftCorner, bottomRightCorner, currentContext, UUID: UUID) {
     generator = PBFlexibleGenerator();
+    this.child = child;
   }
 
   @JsonKey(ignore: true)

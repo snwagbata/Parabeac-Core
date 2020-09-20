@@ -12,7 +12,6 @@ PBIntermediateColumnLayout _$PBIntermediateColumnLayoutFromJson(
     UUID: json['UUID'] as String,
   )
     ..subsemantic = json['subsemantic'] as String
-    ..child = json['child']
     ..color = json['color'] as String
     ..size = json['size'] as Map<String, dynamic>
     ..borderInfo = json['borderInfo'] as Map<String, dynamic>
@@ -25,7 +24,6 @@ Map<String, dynamic> _$PBIntermediateColumnLayoutToJson(
         PBIntermediateColumnLayout instance) =>
     <String, dynamic>{
       'subsemantic': instance.subsemantic,
-      'child': instance.child,
       'color': instance.color,
       'size': instance.size,
       'borderInfo': instance.borderInfo,

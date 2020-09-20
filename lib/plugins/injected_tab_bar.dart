@@ -2,8 +2,7 @@ import 'package:parabeac_core/controllers/main_info.dart';
 import 'package:parabeac_core/design_logic/design_node.dart';
 import 'package:parabeac_core/generation/generators/pb_flutter_generator.dart';
 import 'package:parabeac_core/generation/generators/pb_generator.dart';
-import 'package:parabeac_core/generation/generators/pb_widget_manager.dart';
-import 'package:parabeac_core/input/sketch/entities/layers/abstract_layer.dart';
+import 'package:parabeac_core/interpret_and_optimize/entities/subclasses/pb_attribute.dart';
 import 'package:parabeac_core/plugins/injected_tab.dart';
 import 'package:parabeac_core/interpret_and_optimize/entities/interfaces/pb_inherited_intermediate.dart';
 import 'package:parabeac_core/interpret_and_optimize/entities/interfaces/pb_injected_intermediate.dart';
@@ -12,13 +11,11 @@ import 'package:parabeac_core/interpret_and_optimize/entities/subclasses/pb_inte
 import 'package:parabeac_core/interpret_and_optimize/helpers/pb_context.dart';
 import 'package:parabeac_core/interpret_and_optimize/value_objects/point.dart';
 
-import 'package:json_annotation/json_annotation.dart';
 
 class InjectedTabBar extends PBEgg implements PBInjectedIntermediate {
   final String UUID;
   PBContext currentContext;
   String semanticName = '.*tabbar';
-  List<Tab> tabs = [];
 
   String widgetType = 'APPBAR';
 
@@ -29,6 +26,7 @@ class InjectedTabBar extends PBEgg implements PBInjectedIntermediate {
     this.currentContext,
   }) : super(topLeftCorner, bottomRightCorner, currentContext) {
     generator = PBTabBarGenerator();
+    addAttribute(PBAttribute([], 'tabs'));
   }
 
   @override
@@ -38,13 +36,13 @@ class InjectedTabBar extends PBEgg implements PBInjectedIntermediate {
           .originalRef
           .name
           .contains('.*tab')) {
-        assert(node is! Tab, 'I wrote something wrong here: IvanH');
-        tabs.add(node);
+        assert(node is! Tab, 'node should be a Tab');
+        getAttributeNamed('tabs').attributeNodes.add(node);
       }
     }
 
     if (node is Tab) {
-      tabs.add(node);
+      getAttributeNamed('tabs').attributeNodes.add(node);
     }
   }
 
@@ -72,16 +70,16 @@ class PBTabBarGenerator extends PBGenerator {
 
   @override
   String generate(PBIntermediateNode source) {
+    var tabs = source.getAttributeNamed('tabs').attributeNodes;
     if (source is InjectedTabBar) {
       var buffer = StringBuffer();
       buffer.write('BottomNavigationBar(');
       buffer.write('type: BottomNavigationBarType.fixed,');
       try {
         buffer.write('items:[');
-        for (var i = 0; i < source.tabs.length; i++) {
+        for (var i = 0; i < tabs.length; i++) {
           buffer.write('BottomNavigationBarItem(');
-          var res =
-              manager.generate(source.tabs[i].child, type: BUILDER_TYPE.BODY);
+          var res = manager.generate(tabs[i].child, type: BUILDER_TYPE.BODY);
           buffer.write('icon: $res,');
           buffer.write('title: Text(""),');
           buffer.write('),');

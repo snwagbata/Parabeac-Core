@@ -6,7 +6,8 @@ abstract class PBGenerator {
   final String OBJECTID = 'do_objectID';
   final String widgetType;
   PBGenerationManager _manager;
-  set manager (PBGenerationManager generationManager) => _manager = generationManager;
+  set manager(PBGenerationManager generationManager) =>
+      _manager = generationManager;
   PBGenerationManager get manager => _manager;
 
   PBGenerator(this.widgetType);

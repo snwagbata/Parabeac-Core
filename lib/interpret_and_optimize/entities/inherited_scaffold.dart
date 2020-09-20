@@ -3,6 +3,7 @@ import 'package:parabeac_core/generation/generators/layouts/pb_scaffold_gen.dart
 import 'package:parabeac_core/generation/prototyping/pb_prototype_node.dart';
 import 'package:parabeac_core/input/sketch/entities/layers/artboard.dart';
 import 'package:parabeac_core/interpret_and_optimize/entities/injected_align.dart';
+import 'package:parabeac_core/interpret_and_optimize/entities/subclasses/pb_attribute.dart';
 import 'package:parabeac_core/plugins/injected_app_bar.dart';
 import 'package:parabeac_core/plugins/injected_tab_bar.dart';
 import 'package:parabeac_core/interpret_and_optimize/entities/layouts/temp_group_layout_node.dart';
@@ -29,10 +30,6 @@ class InheritedScaffold extends PBVisualIntermediateNode
   PrototypeNode prototypeNode;
   String name;
   @JsonSerializable(nullable: true)
-  var navbar;
-  @JsonSerializable(nullable: true)
-  var tabbar;
-  @JsonSerializable(nullable: true)
   String backgroundColor;
 
   bool isHomeScreen = false;
@@ -40,10 +37,21 @@ class InheritedScaffold extends PBVisualIntermediateNode
   @override
   String UUID;
 
-  var body;
-
   @JsonKey(ignore: true)
   PBContext currentContext;
+
+  /// Gets the [PBIntermediateNode] at attribute `body`
+  PBIntermediateNode get child => getAttributeNamed('body')?.attributeNode;
+
+  /// Sets the `body` attribute's `attributeNode` to `element`.
+  /// If a `body` attribute does not yet exist, it creates it.
+  set child(PBIntermediateNode element) {
+    if (!hasAttribute('body')) {
+      addAttribute(PBAttribute([], 'body', attributeNodes: [element]));
+    } else {
+      getAttributeNamed('body').attributeNode = element;
+    }
+  }
 
   InheritedScaffold(this.originalRef,
       {Point topLeftCorner,
@@ -79,6 +87,9 @@ class InheritedScaffold extends PBVisualIntermediateNode
     UUID = originalRef.UUID;
 
     backgroundColor = (originalRef as Artboard).backgroundColor?.toHex();
+
+    // Add body attribute
+    addAttribute(PBAttribute([], 'body'));
   }
 
   @override
@@ -93,45 +104,50 @@ class InheritedScaffold extends PBVisualIntermediateNode
   void addChild(PBIntermediateNode node) {
     if (node is PBSharedInstanceIntermediateNode) {
       if (node.originalRef.name.contains('.*navbar')) {
-        navbar = node;
+        addAttribute(PBAttribute([], 'appBar', attributeNodes: [node]));
         return;
       }
       if (node.originalRef.name.contains('.*tabbar')) {
-        tabbar = node;
+        addAttribute(
+            PBAttribute([], 'bottomNavigationBar', attributeNodes: [node]));
         return;
       }
     }
 
     if (node is InjectedNavbar) {
-      navbar = node;
+      addAttribute(PBAttribute([], 'appBar', attributeNodes: [node]));
       return;
     }
     if (node is InjectedTabBar) {
-      tabbar = node;
+      addAttribute(
+          PBAttribute([], 'bottomNavigationBar', attributeNodes: [node]));
       return;
     }
 
-    if (child is TempGroupLayoutNode) {
-      child.addChild(node);
+    var bodyAttribute = getAttributeNamed('body');
+    var bodyNode = bodyAttribute?.attributeNode;
+    if (bodyNode is TempGroupLayoutNode) {
+      bodyNode.addChild(node);
       return;
     }
     // If there's multiple children add a temp group so that layout service lays the children out.
-    if (child != null) {
+    if (bodyNode != null) {
       var temp = TempGroupLayoutNode(null, currentContext);
-      temp.addChild(child);
+      temp.addChild(bodyNode);
       temp.addChild(node);
-      child = temp;
-    } else {
-      child = node;
+      bodyAttribute.attributeNode = temp;
     }
+    bodyAttribute.attributeNode = node;
   }
 
   @override
   void alignChild() {
     var align = InjectedAlign(topLeftCorner, bottomRightCorner, currentContext);
-    align.addChild(child);
+    var bodyAttribute = getAttributeNamed('body');
+    var bodyNode = bodyAttribute?.attributeNode;
+    align.addChild(bodyNode);
     align.alignChild();
-    child = align;
+    bodyAttribute.attributeNode = align;
   }
 
   Map<String, Object> toJson() => _$InheritedScaffoldToJson(this);

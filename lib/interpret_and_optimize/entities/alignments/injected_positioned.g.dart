@@ -22,7 +22,6 @@ InjectedPositioned _$InjectedPositionedFromJson(Map<String, dynamic> json) {
     ..borderInfo = json['borderInfo'] as Map<String, dynamic>
     ..alignment = json['alignment'] as Map<String, dynamic>
     ..name = json['name'] as String
-    ..child = json['child']
     ..widgetType = json['widgetType'] as String
     ..horizontalAlignValue = (json['horizontalAlignValue'] as num)?.toDouble()
     ..verticalAlignValue = (json['verticalAlignValue'] as num)?.toDouble()
@@ -40,7 +39,6 @@ Map<String, dynamic> _$InjectedPositionedToJson(InjectedPositioned instance) =>
       'borderInfo': instance.borderInfo,
       'alignment': instance.alignment,
       'name': instance.name,
-      'child': instance.child,
       'UUID': instance.UUID,
       'widgetType': instance.widgetType,
       'horizontalAlignValue': instance.horizontalAlignValue,

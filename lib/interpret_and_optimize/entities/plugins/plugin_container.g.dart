@@ -22,7 +22,6 @@ PluginContainer _$PluginContainerFromJson(Map<String, dynamic> json) {
     ..name = json['name'] as String
     ..semanticName = json['semanticName'] as String
     ..subsemantic = json['subsemantic'] as String
-    ..child = json['child']
     ..size = json['size'] as Map<String, dynamic>
     ..margins = json['margins'] as Map<String, dynamic>
     ..padding = json['padding'] as Map<String, dynamic>
@@ -42,7 +41,6 @@ Map<String, dynamic> _$PluginContainerToJson(PluginContainer instance) =>
       'alignY': instance.alignY,
       'color': instance.color,
       'UUID': instance.UUID,
-      'child': instance.child,
       'size': instance.size,
       'margins': instance.margins,
       'padding': instance.padding,

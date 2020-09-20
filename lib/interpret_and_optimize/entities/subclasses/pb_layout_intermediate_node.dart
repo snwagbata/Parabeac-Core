@@ -3,6 +3,7 @@ import 'package:parabeac_core/generation/prototyping/pb_prototype_node.dart';
 import 'package:parabeac_core/interpret_and_optimize/entities/interfaces/pb_injected_intermediate.dart';
 import 'package:parabeac_core/interpret_and_optimize/entities/layouts/exceptions/layout_exception.dart';
 import 'package:parabeac_core/interpret_and_optimize/entities/layouts/rules/layout_rule.dart';
+import 'package:parabeac_core/interpret_and_optimize/entities/subclasses/pb_attribute.dart';
 import 'package:parabeac_core/interpret_and_optimize/entities/subclasses/pb_intermediate_node.dart';
 import 'package:parabeac_core/interpret_and_optimize/helpers/pb_context.dart';
 import 'package:parabeac_core/interpret_and_optimize/value_objects/point.dart';
@@ -12,10 +13,10 @@ import 'package:parabeac_core/interpret_and_optimize/value_objects/point.dart';
 abstract class PBLayoutIntermediateNode extends PBIntermediateNode
     implements PBInjectedIntermediate {
   /// LayoutNodes support 0 or multiple children.
-  List _children = [];
 
   ///Getting the children
-  List<PBIntermediateNode> get children => List.from(_children);
+  List<PBIntermediateNode> get children =>
+      getAttributeNamed('children')?.attributeNodes;
 
   ///The rules of the layout. MAKE SURE TO REGISTER THEIR CUSTOM RULES
   List<LayoutRule> _layoutRules = [];
@@ -38,14 +39,16 @@ abstract class PBLayoutIntermediateNode extends PBIntermediateNode
       this._layoutRules, this._exceptions, PBContext currentContext,
       {topLeftCorner, bottomRightCorner, this.UUID, this.prototypeNode})
       : super(topLeftCorner, bottomRightCorner, UUID,
-            currentContext: currentContext);
+            currentContext: currentContext) {
+    addAttribute(PBAttribute([], 'children'));
+  }
 
   void alignChildren();
 
   ///Replace the current children with the [children]
   void replaceChildren(List<PBIntermediateNode> children) {
     if (children != null || children.isNotEmpty) {
-      _children = children;
+      getAttributeNamed('children')?.attributeNodes = children;
     }
     _resize();
   }
@@ -53,8 +56,10 @@ abstract class PBLayoutIntermediateNode extends PBIntermediateNode
   /// Replace the child at `index` for `replacement`.
   /// Returns true if the replacement wsa succesful, false otherwise.
   bool replaceChildAt(int index, PBIntermediateNode replacement) {
-    if (_children != null && _children.length > index) {
-      _children[index] = replacement;
+    var attribute = getAttributeNamed('children');
+    var children = attribute.attributeNodes;
+    if (children != null && children.length > index) {
+      attribute.attributeNodes[index] = replacement;
       return true;
     }
     return false;
@@ -62,18 +67,20 @@ abstract class PBLayoutIntermediateNode extends PBIntermediateNode
 
   ///Add node to child
   void addChildToLayout(PBIntermediateNode node) {
-    _children.add(node);
+    getAttributeNamed('children').attributeNodes.add(node);
     _resize();
   }
 
   void _resize() {
-    assert(_children.isNotEmpty,
+    var attribute = getAttributeNamed('children');
+    var children = attribute?.attributeNodes;
+    assert(children.isNotEmpty,
         'There should be children in the layout so it can resize.');
-    var minX = (_children[0] as PBIntermediateNode).topLeftCorner.x,
-        minY = (_children[0] as PBIntermediateNode).topLeftCorner.y,
-        maxX = (_children[0] as PBIntermediateNode).bottomRightCorner.x,
-        maxY = (_children[0] as PBIntermediateNode).bottomRightCorner.y;
-    for (var child in _children) {
+    var minX = (children[0] as PBIntermediateNode).topLeftCorner.x,
+        minY = (children[0] as PBIntermediateNode).topLeftCorner.y,
+        maxX = (children[0] as PBIntermediateNode).bottomRightCorner.x,
+        maxY = (children[0] as PBIntermediateNode).bottomRightCorner.y;
+    for (var child in children) {
       minX = min((child as PBIntermediateNode).topLeftCorner.x, minX);
       minY = min((child as PBIntermediateNode).topLeftCorner.y, minY);
       maxX = max((child as PBIntermediateNode).bottomRightCorner.x, maxX);
@@ -85,15 +92,17 @@ abstract class PBLayoutIntermediateNode extends PBIntermediateNode
 
   ///Remove Child
   bool removeChildren(PBIntermediateNode node) {
-    if (_children.contains(node)) {
-      _children.remove(node);
+    var attribute = getAttributeNamed('children');
+    var children = attribute.attributeNodes;
+    if (children.contains(node)) {
+      attribute.attributeNodes.remove(node);
     }
     _resize();
     return false;
   }
 
   ///Sort children
-  void sortChildren() => _children.sort(
+  void sortChildren() => getAttributeNamed('children')?.attributeNodes?.sort(
       (child0, child1) => child0.topLeftCorner.compareTo(child1.topLeftCorner));
 
   ///The [PBLayoutIntermediateNode] contains a series of rules that determines if the children is part of that layout. All the children

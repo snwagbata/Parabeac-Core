@@ -40,7 +40,6 @@ class PluginContainer extends PBVisualIntermediateNode implements PBEgg {
   @JsonKey(ignore: true)
   PBContext currentContext;
 
-  var child;
   Map size;
   Map margins;
   Map padding;

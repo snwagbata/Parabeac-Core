@@ -9,7 +9,6 @@ part of 'flexible.dart';
 Flexible _$FlexibleFromJson(Map<String, dynamic> json) {
   return Flexible(
     json['UUID'] as String,
-    child: json['child'],
     flex: json['flex'] as int,
   )
     ..subsemantic = json['subsemantic'] as String
@@ -29,7 +28,6 @@ Map<String, dynamic> _$FlexibleToJson(Flexible instance) => <String, dynamic>{
       'name': instance.name,
       'color': instance.color,
       'flex': instance.flex,
-      'child': instance.child,
       'UUID': instance.UUID,
       'widgetType': instance.widgetType,
     };

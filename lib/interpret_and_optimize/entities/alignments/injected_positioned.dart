@@ -14,7 +14,6 @@ class InjectedPositioned extends PBIntermediateNode
   final PositioningHolder positionedHolder;
   @JsonKey(ignore: true)
   PBContext currentContext;
-  var child;
 
   final String UUID;
 
