@@ -136,8 +136,9 @@ class InheritedScaffold extends PBVisualIntermediateNode
       temp.addChild(bodyNode);
       temp.addChild(node);
       bodyAttribute.attributeNode = temp;
+    } else {
+      bodyAttribute.attributeNode = node;
     }
-    bodyAttribute.attributeNode = node;
   }
 
   @override

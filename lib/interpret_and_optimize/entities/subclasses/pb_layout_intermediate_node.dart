@@ -57,7 +57,6 @@ abstract class PBLayoutIntermediateNode extends PBIntermediateNode
   /// Returns true if the replacement wsa succesful, false otherwise.
   bool replaceChildAt(int index, PBIntermediateNode replacement) {
     var attribute = getAttributeNamed('children');
-    var children = attribute.attributeNodes;
     if (children != null && children.length > index) {
       attribute.attributeNodes[index] = replacement;
       return true;
@@ -72,8 +71,6 @@ abstract class PBLayoutIntermediateNode extends PBIntermediateNode
   }
 
   void _resize() {
-    var attribute = getAttributeNamed('children');
-    var children = attribute?.attributeNodes;
     assert(children.isNotEmpty,
         'There should be children in the layout so it can resize.');
     var minX = (children[0] as PBIntermediateNode).topLeftCorner.x,
