@@ -101,7 +101,7 @@ class PBSharedMasterNode extends PBVisualIntermediateNode
 
   @override
   void addChild(PBIntermediateNode node) {
-    child = node;
+    child == null ? child = node : children = [node];
   }
 
   @override
