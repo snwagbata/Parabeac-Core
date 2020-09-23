@@ -40,7 +40,7 @@ abstract class PBIntermediateNode {
   @JsonKey(ignore: true)
   set child(PBIntermediateNode element) {
     if (!hasAttribute('child')) {
-      addAttribute(PBAttribute([], 'child', attributeNodes: [element]));
+      addAttribute(PBAttribute('child', attributeNodes: [element]));
     } else {
       getAttributeNamed('child').attributeNode = element;
     }

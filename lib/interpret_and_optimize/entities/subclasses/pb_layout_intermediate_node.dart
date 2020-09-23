@@ -40,7 +40,7 @@ abstract class PBLayoutIntermediateNode extends PBIntermediateNode
       {topLeftCorner, bottomRightCorner, this.UUID, this.prototypeNode})
       : super(topLeftCorner, bottomRightCorner, UUID,
             currentContext: currentContext) {
-    addAttribute(PBAttribute([], 'children'));
+    addAttribute(PBAttribute('children'));
   }
 
   void alignChildren();

@@ -24,9 +24,9 @@ class InjectedNavbar extends PBEgg implements PBInjectedIntermediate {
       : super(topLeftCorner, bottomRightCorner, currentContext) {
     generator = PBAppBarGenerator();
 
-    addAttribute(PBAttribute([], 'leading'));
-    addAttribute(PBAttribute([], 'title'));
-    addAttribute(PBAttribute([], 'actions'));
+    addAttribute(PBAttribute('leading'));
+    addAttribute(PBAttribute('title'));
+    addAttribute(PBAttribute('actions'));
   }
 
   @override

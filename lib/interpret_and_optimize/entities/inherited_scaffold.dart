@@ -47,7 +47,7 @@ class InheritedScaffold extends PBVisualIntermediateNode
   /// If a `body` attribute does not yet exist, it creates it.
   set child(PBIntermediateNode element) {
     if (!hasAttribute('body')) {
-      addAttribute(PBAttribute([], 'body', attributeNodes: [element]));
+      addAttribute(PBAttribute('body', attributeNodes: [element]));
     } else {
       getAttributeNamed('body').attributeNode = element;
     }
@@ -89,7 +89,7 @@ class InheritedScaffold extends PBVisualIntermediateNode
     backgroundColor = (originalRef as Artboard).backgroundColor?.toHex();
 
     // Add body attribute
-    addAttribute(PBAttribute([], 'body'));
+    addAttribute(PBAttribute('body'));
   }
 
   @override
@@ -104,23 +104,22 @@ class InheritedScaffold extends PBVisualIntermediateNode
   void addChild(PBIntermediateNode node) {
     if (node is PBSharedInstanceIntermediateNode) {
       if (node.originalRef.name.contains('.*navbar')) {
-        addAttribute(PBAttribute([], 'appBar', attributeNodes: [node]));
+        addAttribute(PBAttribute('appBar', attributeNodes: [node]));
         return;
       }
       if (node.originalRef.name.contains('.*tabbar')) {
         addAttribute(
-            PBAttribute([], 'bottomNavigationBar', attributeNodes: [node]));
+            PBAttribute('bottomNavigationBar', attributeNodes: [node]));
         return;
       }
     }
 
     if (node is InjectedNavbar) {
-      addAttribute(PBAttribute([], 'appBar', attributeNodes: [node]));
+      addAttribute(PBAttribute('appBar', attributeNodes: [node]));
       return;
     }
     if (node is InjectedTabBar) {
-      addAttribute(
-          PBAttribute([], 'bottomNavigationBar', attributeNodes: [node]));
+      addAttribute(PBAttribute('bottomNavigationBar', attributeNodes: [node]));
       return;
     }
 
