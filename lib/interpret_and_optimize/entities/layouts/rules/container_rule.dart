@@ -12,13 +12,17 @@ class ContainerPostRule extends PostConditionRule {
     overlappingNodesLayoutRule = OverlappingNodesLayoutRule();
   }
 
+  /// Returns true if `currentNode` is a [PBIntermediateStackLayout] with two
+  /// children: a [PBVisualIntermediateNode] and [PBLayoutIntermediateNode] that
+  /// have overlapping coordinates.
   @override
   bool testRule(PBIntermediateNode currentNode, PBIntermediateNode nextNode) {
     var layout =
         currentNode is PBIntermediateStackLayout ? currentNode : nextNode;
-    if (layout == null) {
+    if (layout == null || layout is! PBIntermediateStackLayout) {
       return false;
     }
+
     var children = (layout as PBLayoutIntermediateNode).children;
     if (children.length == 2) {
       if ((children[0] is PBVisualIntermediateNode &&
@@ -36,6 +40,9 @@ class ContainerPostRule extends PostConditionRule {
     return false;
   }
 
+  /// Removes the [PBIntermediateStackLayout] and wraps the
+  /// [PBLayoutIntermediateNode] child with the [PBVisualIntermediateNode]
+  /// child.
   @override
   dynamic executeAction(
       PBIntermediateNode currentNode, PBIntermediateNode nextNode) {
